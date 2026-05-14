@@ -32,7 +32,21 @@
               <a href="#work">Projects</a>
               <a href="#contact">Contact</a>
             </div>
+            <button class="hamburger" :class="{ 'hamburger--open': mobileMenuOpen }" @click="toggleMenu" aria-label="Toggle menu">
+              <span />
+              <span />
+              <span />
+            </button>
           </nav>
+
+          <!-- Mobile Menu -->
+          <div class="mobile-menu" :class="{ 'mobile-menu--open': mobileMenuOpen }" @click.self="closeMenu">
+            <a href="#about" @click="closeMenu">About</a>
+            <a href="#interests" @click="closeMenu">Interests</a>
+            <a href="#now" @click="closeMenu">Now</a>
+            <a href="#work" @click="closeMenu">Projects</a>
+            <a href="#contact" @click="closeMenu">Contact</a>
+          </div>
 
           <div id="top" class="hero-layout">
             <div class="hero-copy">
@@ -169,9 +183,24 @@ import { ref, computed, onMounted } from 'vue';
 import { useScrollReveal } from './composables/useScrollReveal';
 
 const loading = ref(true);
+const mobileMenuOpen = ref(false);
 const mouseX = ref(50);
 const mouseY = ref(50);
 const currentYear = new Date().getFullYear();
+
+function toggleMenu() {
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+}
+
+function closeMenu() {
+  mobileMenuOpen.value = false;
+}
+
+function onKeyDown(e) {
+  if (e.key === 'Escape' && mobileMenuOpen.value) {
+    closeMenu();
+  }
+}
 
 const cursorStyle = computed(() => ({
   '--cursor-x': `${mouseX.value}%`,
@@ -253,5 +282,8 @@ onMounted(() => {
   if (window.matchMedia('(pointer: fine)').matches) {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
   }
+
+  // Escape key for mobile menu
+  window.addEventListener('keydown', onKeyDown);
 });
 </script>
