@@ -15,7 +15,7 @@ export function useScrollReveal() {
       { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
     );
 
-    document.querySelectorAll('[data-reveal]').forEach((el) => {
+    document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach((el) => {
       observer.observe(el);
     });
   });

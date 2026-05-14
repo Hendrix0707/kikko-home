@@ -13,179 +13,224 @@
       <div class="aurora-orb aurora-orb--4" />
     </div>
 
-    <!-- Cursor Glow -->
-    <div class="cursor-glow" :style="cursorStyle" />
-
     <main class="page-shell">
+      <!-- Navigation -->
+      <nav class="top-nav">
+        <div class="nav-inner">
+          <a class="brand" href="#top">
+            <img
+              v-if="profile.avatar"
+              :src="profile.avatar"
+              alt="avatar"
+              class="nav-avatar"
+            />
+            <span class="brand-name">{{ profile.name }}</span>
+          </a>
+          <div class="nav-right">
+            <a href="#works" class="nav-link">Projects</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+          <button
+            class="hamburger"
+            :class="{ 'hamburger--open': mobileMenuOpen }"
+            @click="toggleMenu"
+            aria-label="Toggle menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Menu -->
+      <div
+        class="mobile-menu"
+        :class="{ 'mobile-menu--open': mobileMenuOpen }"
+        @click.self="closeMenu"
+      >
+        <a href="#works" @click="closeMenu">Projects</a>
+        <a href="#about" @click="closeMenu">About</a>
+        <a href="#contact" @click="closeMenu">Contact</a>
+      </div>
+
       <!-- Hero Section -->
-      <section class="hero-grid">
-        <v-container class="content-wrap" fluid>
-          <nav class="top-nav">
-            <a class="brand" href="#top" aria-label="kikko home">
-              <span class="brand-mark">k</span>
-              <span>{{ profile.name }}</span>
+      <header id="top" class="hero">
+        <div class="hero-content">
+          <span class="hero-dot" aria-hidden="true" />
+          <p class="hero-line hero-lead" style="--stagger: 0">
+            你好，我是 {{ profile.name }}，
+          </p>
+          <p class="hero-line hero-support" style="--stagger: 1">
+            {{ profile.status }} · {{ profile.location }}
+          </p>
+          <p class="hero-line hero-support" style="--stagger: 2">
+            {{ profile.tagline }}
+          </p>
+          <div class="hero-actions" style="--stagger: 3">
+            <a class="hero-cta hero-cta--primary" href="#contact">
+              Say hello
+              <v-icon icon="mdi-arrow-right" size="18" />
             </a>
-            <div class="nav-links">
-              <a href="#about">About</a>
-              <a href="#interests">Interests</a>
-              <a href="#now">Now</a>
-              <a href="#work">Projects</a>
-              <a href="#contact">Contact</a>
-            </div>
-            <button class="hamburger" :class="{ 'hamburger--open': mobileMenuOpen }" @click="toggleMenu" aria-label="Toggle menu">
-              <span />
-              <span />
-              <span />
-            </button>
-          </nav>
-
-          <!-- Mobile Menu -->
-          <div class="mobile-menu" :class="{ 'mobile-menu--open': mobileMenuOpen }" @click.self="closeMenu">
-            <a href="#about" @click="closeMenu">About</a>
-            <a href="#interests" @click="closeMenu">Interests</a>
-            <a href="#now" @click="closeMenu">Now</a>
-            <a href="#work" @click="closeMenu">Projects</a>
-            <a href="#contact" @click="closeMenu">Contact</a>
+            <a
+              class="hero-cta"
+              :href="profile.github"
+              target="_blank"
+              rel="noopener"
+            >
+              GitHub
+              <v-icon icon="mdi-github" size="18" />
+            </a>
+            <a class="hero-cta" :href="`mailto:${profile.email}`">
+              Email
+              <v-icon icon="mdi-email-outline" size="18" />
+            </a>
           </div>
+          <div class="hero-highlights">
+            <div
+              class="hero-highlight"
+              v-for="(hl, i) in heroHighlights"
+              :key="i"
+              :style="`--stagger: ${i + 4}`"
+            >
+              <p class="hero-highlight-value">{{ hl.value }}</p>
+              <p class="hero-highlight-label">{{ hl.label }}</p>
+            </div>
+          </div>
+        </div>
+      </header>
 
-          <div id="top" class="hero-layout">
-            <div class="hero-copy">
-              <p class="eyebrow">
-                <span class="eyebrow-dot" />
-                {{ profile.status }} · {{ profile.location }}
-              </p>
-              <h1>
-                <span class="hero-title-line">Hi, I'm {{ profile.name }}</span>
-              </h1>
-              <p class="lead">{{ profile.tagline }}</p>
-
-              <div class="hero-actions">
-                <v-btn class="primary-btn" size="large" href="#contact">
-                  Say hello
-                  <v-icon end icon="mdi-arrow-right" />
-                </v-btn>
-                <v-btn class="ghost-btn" size="large" variant="outlined" :href="profile.github" target="_blank">
-                  GitHub
-                  <v-icon end icon="mdi-github" />
-                </v-btn>
+      <!-- Projects Section -->
+      <section id="works" class="section" data-reveal>
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid" data-reveal-stagger>
+          <article
+            v-for="project in projects"
+            :key="project.title"
+            class="project-card"
+            :style="{ backgroundColor: project.bg, borderColor: project.border }"
+          >
+            <div class="project-content">
+              <div class="project-header">
+                <h3 class="project-name">
+                  <strong>{{ project.title }}</strong>
+                  <span class="project-subtitle">{{ project.subtitle }}</span>
+                </h3>
+              </div>
+              <p class="project-desc">{{ project.description }}</p>
+              <div class="project-meta">
+                <div class="project-tags">
+                  <span
+                    class="tag"
+                    v-for="tag in project.tags"
+                    :key="tag"
+                  >{{ tag }}</span>
+                </div>
+                <div class="project-links">
+                  <a
+                    v-for="link in project.links"
+                    :key="link.text"
+                    :href="link.url"
+                    target="_blank"
+                    rel="noopener"
+                    class="project-link"
+                  >{{ link.text }} →</a>
+                </div>
               </div>
             </div>
-
-            <aside class="profile-card" aria-label="profile card">
-              <div class="avatar-wrap">
-                <img v-if="profile.avatar" :src="profile.avatar" alt="kikko avatar" />
-                <span v-else>k</span>
-              </div>
-              <div>
-                <p class="card-kicker">ShanghaiTech · SIST</p>
-                <h2>{{ profile.name }}</h2>
-                <p>Incoming graduate student exploring embodied intelligence, code, and small personal experiments.</p>
-              </div>
-              <div class="signal-row">
-                <span v-for="signal in signals" :key="signal">{{ signal }}</span>
-              </div>
-            </aside>
-          </div>
-        </v-container>
+          </article>
+        </div>
       </section>
 
-      <!-- Content Sections -->
-      <v-container class="section-wrap">
-        <section id="about" class="section-block about-block" data-reveal>
-          <div>
-            <p class="section-label">About</p>
-            <h2>一个正在探索具身智能的上海科技大学研 0 学生。</h2>
-          </div>
-          <p>
-            我目前是上海科技大学信息科学与技术学院的研 0 学生，研究方向是具身智能。
-            现阶段我还在打基础、读论文、补工程能力，也在慢慢寻找自己真正感兴趣的问题。
-            这个网站暂时不是正式学术主页，更像是一个个人数字空间：用于自我介绍、记录想法，
-            也放一些自己搓着玩的项目。
-          </p>
-        </section>
+      <!-- About + Skills Section -->
+      <section id="about" class="section">
+        <h2 class="section-title" data-reveal>About</h2>
+        <div class="about-grid">
+          <article class="about-card" data-reveal>
+            <h3 class="about-card-heading">关于我</h3>
+            <p class="about-text">
+              我目前是上海科技大学信息科学与技术学院（SIST）的研 0 学生，研究方向是具身智能。现阶段还在打基础、读论文、补工程能力，慢慢寻找自己真正感兴趣的问题。这个网站是一个个人数字空间：用于自我介绍、记录想法，也放一些自己搓着玩的项目。
+            </p>
+          </article>
 
-        <section id="interests" class="section-block" data-reveal>
-          <div class="section-heading">
-            <div>
-              <p class="section-label">Interests</p>
-              <h2>Things I am curious about</h2>
-            </div>
-            <span class="tiny-note">learning in progress</span>
-          </div>
-          <div class="chip-cloud" data-reveal-stagger>
-            <v-chip v-for="interest in interests" :key="interest" color="primary" variant="tonal">{{ interest }}</v-chip>
-          </div>
-        </section>
-
-        <section id="now" class="section-block" data-reveal>
-          <div class="section-heading">
-            <div>
-              <p class="section-label">Now</p>
-              <h2>What I am doing now</h2>
-            </div>
-          </div>
-          <div class="now-list" data-reveal-stagger>
-            <article v-for="item in nowItems" :key="item.title" class="now-item">
-              <span>{{ item.mark }}</span>
-              <div>
-                <h3>{{ item.title }}</h3>
-                <p>{{ item.description }}</p>
+          <article class="about-card" data-reveal>
+            <h3 class="about-card-heading">能力栈</h3>
+            <div class="skill-groups">
+              <div
+                class="skill-group"
+                v-for="group in skillGroups"
+                :key="group.category"
+              >
+                <p class="skill-category">{{ group.category }}</p>
+                <p class="skill-items">{{ group.items }}</p>
               </div>
-            </article>
-          </div>
-        </section>
-
-        <section id="work" class="section-block" data-reveal>
-          <div class="section-heading">
-            <div>
-              <p class="section-label">Projects</p>
-              <h2>Small things I am building</h2>
             </div>
-          </div>
-          <div class="project-grid" data-reveal-stagger>
-            <article v-for="project in projects" :key="project.title" class="project-card">
-              <div class="project-index">{{ project.index }}</div>
-              <h3>{{ project.title }}</h3>
-              <p>{{ project.description }}</p>
-            </article>
-          </div>
-        </section>
+          </article>
 
-        <section id="contact" class="contact-panel" data-reveal>
-          <div>
-            <p class="section-label">Contact</p>
-            <h2>如果你想了解我，可以从这些链接开始。</h2>
-            <p>这里会逐步整理我的 GitHub、邮箱、学习记录和未来可能的学术主页。现在，它先是一个轻量的自我介绍入口。</p>
-          </div>
-          <div class="contact-actions">
-            <v-btn color="primary" size="large" :href="`mailto:${profile.email}`">
-              Email me
-              <v-icon end icon="mdi-email-outline" />
-            </v-btn>
-            <v-btn variant="outlined" size="large" :href="profile.github" target="_blank">
-              View GitHub
-              <v-icon end icon="mdi-open-in-new" />
-            </v-btn>
-          </div>
-        </section>
-      </v-container>
+          <article class="about-card" data-reveal>
+            <h3 class="about-card-heading">研究兴趣</h3>
+            <div class="chip-cloud">
+              <span
+                class="tag"
+                v-for="interest in interests"
+                :key="interest"
+              >{{ interest }}</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Now Section -->
+      <section id="now" class="section">
+        <h2 class="section-title" data-reveal>Now</h2>
+        <div class="now-list" data-reveal-stagger>
+          <article
+            v-for="item in nowItems"
+            :key="item.title"
+            class="now-item"
+          >
+            <span class="now-mark">{{ item.mark }}</span>
+            <div>
+              <h3 class="now-title">{{ item.title }}</h3>
+              <p class="now-desc">{{ item.description }}</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="section">
+        <h2 class="section-title" data-reveal>Contact</h2>
+        <div class="contact-list" data-reveal>
+          <a
+            v-for="c in contacts"
+            :key="c.label"
+            :href="c.url"
+            target="_blank"
+            rel="noopener"
+            class="contact-item"
+          >
+            <span class="contact-text">{{ c.value }}</span>
+            <span class="contact-label">{{ c.label }}</span>
+          </a>
+        </div>
+      </section>
 
       <!-- Footer -->
       <footer class="page-footer">
-        <p>&copy; {{ currentYear }} <a :href="profile.github" target="_blank">{{ profile.name }}</a> &mdash; Built with Vue &amp; Vuetify</p>
+        <p>&copy; {{ currentYear }} {{ profile.name }}</p>
       </footer>
     </main>
   </v-app>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useScrollReveal } from './composables/useScrollReveal';
 
 const loading = ref(true);
 const mobileMenuOpen = ref(false);
-const mouseX = ref(50);
-const mouseY = ref(50);
 const currentYear = new Date().getFullYear();
 
 function toggleMenu() {
@@ -202,28 +247,88 @@ function onKeyDown(e) {
   }
 }
 
-const cursorStyle = computed(() => ({
-  '--cursor-x': `${mouseX.value}%`,
-  '--cursor-y': `${mouseY.value}%`,
-}));
+// cursor glow removed
 
 const profile = {
   name: import.meta.env.VITE_SITE_NAME || 'kikko',
-  tagline: import.meta.env.VITE_SITE_TAGLINE || 'ShanghaiTech SIST graduate student exploring embodied intelligence, code, and small personal experiments.',
+  tagline:
+    import.meta.env.VITE_SITE_TAGLINE ||
+    'ShanghaiTech SIST graduate student exploring embodied intelligence, code, and small personal experiments.',
   location: import.meta.env.VITE_SITE_LOCATION || 'Shanghai, China',
-  status: import.meta.env.VITE_SITE_STATUS || 'Embodied Intelligence · Graduate Year 0',
-  github: import.meta.env.VITE_GITHUB_URL || 'https://github.com/Hendrix0707',
+  status:
+    import.meta.env.VITE_SITE_STATUS ||
+    'Embodied Intelligence · Graduate Year 0',
+  github:
+    import.meta.env.VITE_GITHUB_URL || 'https://github.com/Hendrix0707',
   email: import.meta.env.VITE_EMAIL || 'hello@example.com',
   avatar: import.meta.env.VITE_AVATAR_URL || '/touxiang.jpg',
 };
 
-const signals = ['ShanghaiTech', 'Embodied AI', 'Personal site'];
+const heroHighlights = [
+  { value: 'ShanghaiTech', label: 'SIST · 研 0' },
+  { value: 'Embodied AI', label: '研究方向' },
+  { value: 'Robot Learning', label: 'VLA · Simulation' },
+  { value: 'Personal Site', label: 'Built with Vue & Vuetify' },
+];
+
+const projects = [
+  {
+    title: 'Personal homepage',
+    subtitle: 'Vue 3 + Vuetify 个人主页',
+    description:
+      '一个作为数字自我介绍的轻量个人网站，包含关于我、研究兴趣、项目和联系信息。支持暗色主题、极光背景和滚动动画。',
+    tags: ['Vue 3', 'Vuetify', 'Vite', 'Vercel'],
+    bg: 'rgba(50, 30, 35, 0.45)',
+    border: 'rgba(248, 180, 180, 0.12)',
+    links: [
+      { text: '查看源码', url: 'https://github.com/Hendrix0707' },
+    ],
+  },
+  {
+    title: 'Learning notes',
+    subtitle: '学习笔记与知识库',
+    description:
+      '未来用于记录具身智能、机器人学习、AI 系统和 Web 开发方面的学习笔记。正在逐步整理和构建中。',
+    tags: ['Notes', 'Research', 'AI', 'Robotics'],
+    bg: 'rgba(35, 50, 35, 0.45)',
+    border: 'rgba(180, 220, 180, 0.12)',
+    links: [],
+  },
+  {
+    title: 'Tiny experiments',
+    subtitle: '小工具与实验项目',
+    description:
+      '学习和探索新想法时做的小 Demo、小工具和周末项目。涵盖从仿真环境到 Web 工具的各种实验。',
+    tags: ['Experiments', 'Demos', 'Learning'],
+    bg: 'rgba(38, 38, 55, 0.45)',
+    border: 'rgba(180, 180, 240, 0.12)',
+    links: [],
+  },
+];
+
+const skillGroups = [
+  {
+    category: 'AI & Research',
+    items:
+      'Embodied Intelligence, Robot Learning, Vision-Language-Action, Simulation Environments (Isaac Sim, MuJoCo)',
+  },
+  {
+    category: 'Engineering',
+    items:
+      'Python, PyTorch, Vue 3, Vuetify, JavaScript, HTML/CSS, Vite',
+  },
+  {
+    category: 'Tools & Workflow',
+    items: 'Git, Linux, Vercel, VS Code, LaTeX, Markdown',
+  },
+];
+
 const interests = [
   'Embodied Intelligence',
   'Robot Learning',
   'Vision-Language-Action',
   'Simulation Environments',
-  'Human-centered AI',
+  'Human-Centered AI',
   'Useful AI Systems',
 ];
 
@@ -231,59 +336,46 @@ const nowItems = [
   {
     mark: '01',
     title: 'Preparing for graduate study',
-    description: 'Getting ready for life at ShanghaiTech SIST and building a stronger foundation for research.',
+    description:
+      'Getting ready for life at ShanghaiTech SIST and building a stronger foundation for research.',
   },
   {
     mark: '02',
     title: 'Learning embodied intelligence',
-    description: 'Reading, coding, and trying to understand how agents perceive, reason, and act in the world.',
+    description:
+      'Reading, coding, and trying to understand how agents perceive, reason, and act in the world.',
   },
   {
     mark: '03',
-    title: 'Building this little homepage',
-    description: 'Treating this site as a small side project and a place to keep my identity, links, and notes together.',
+    title: 'Building this homepage',
+    description:
+      'Treating this site as a small side project and a place to keep my identity, links, and notes together.',
   },
 ];
 
-const projects = [
+const contacts = [
   {
-    index: '01',
-    title: 'Personal homepage',
-    description: 'A small Vue + Vuetify website built as my digital home and self-introduction page.',
+    value: profile.email,
+    label: '邮箱',
+    url: `mailto:${profile.email}`,
   },
   {
-    index: '02',
-    title: 'Learning notes',
-    description: 'A future space for notes on embodied intelligence, robotics, AI systems, and web development.',
-  },
-  {
-    index: '03',
-    title: 'Tiny experiments',
-    description: 'Small demos, tools, and weekend projects made while learning and exploring new ideas.',
+    value: profile.github.replace('https://', ''),
+    label: 'GitHub',
+    url: profile.github,
   },
 ];
 
 // Scroll reveal
 useScrollReveal();
 
-// Mouse tracking for cursor glow (desktop only)
-function onMouseMove(e) {
-  mouseX.value = (e.clientX / window.innerWidth) * 100;
-  mouseY.value = (e.clientY / window.innerHeight) * 100;
-}
+// Mouse tracking removed — cursor glow disabled
 
 onMounted(() => {
-  // Loading screen
   setTimeout(() => {
     loading.value = false;
   }, 800);
 
-  // Cursor glow
-  if (window.matchMedia('(pointer: fine)').matches) {
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-  }
-
-  // Escape key for mobile menu
   window.addEventListener('keydown', onKeyDown);
 });
 </script>

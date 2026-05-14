@@ -4,8 +4,8 @@ import 'vuetify/styles';
 const kikkoTheme = {
   dark: true,
   colors: {
-    background: '#0D1117',
-    surface: '#111827',
+    background: '#080c12',
+    surface: '#080c12',
     primary: '#A7F3D0',
     secondary: '#93C5FD',
     accent: '#FDE68A',
