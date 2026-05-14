@@ -2,17 +2,17 @@ import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 
 const kikkoTheme = {
-  dark: true,
+  dark: false,
   colors: {
-    background: '#080c12',
-    surface: '#080c12',
-    primary: '#A7F3D0',
-    secondary: '#93C5FD',
-    accent: '#FDE68A',
-    error: '#FCA5A5',
-    info: '#7DD3FC',
-    success: '#86EFAC',
-    warning: '#FCD34D',
+    background: '#f0f2f2',
+    surface: '#ffffff',
+    primary: '#35bfab',
+    secondary: '#7b888e',
+    accent: '#1fc9e7',
+    error: '#e0556a',
+    info: '#4da8da',
+    success: '#35bfab',
+    warning: '#e8a840',
   },
 };
 
